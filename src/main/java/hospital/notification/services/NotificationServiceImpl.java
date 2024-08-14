@@ -51,7 +51,16 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Override
 	public String sendNotification(NotificationDto dto) {
+		Notification notification = new Notification(dto);
+
+		/* create mail body */
+
 		return null;
+	}
+
+	@Override
+	public Notification saveNotification(NotificationDto dto) {
+		return notificationRepository.save(new Notification(dto));
 	}
 
 }

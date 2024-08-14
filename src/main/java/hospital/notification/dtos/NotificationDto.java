@@ -18,7 +18,7 @@ public class NotificationDto {
 	@NotEmpty(message = "to is Empty")
 	private String source;
 
-	private String subject;
+	private String subject = "General - Notification";
 
 	@NotBlank(message = "to is Empty")
 	@NotNull(message = "to is null")

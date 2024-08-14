@@ -27,4 +27,6 @@ public interface NotificationService {
 
 	String sendNotification(NotificationDto dto);
 
+	Notification saveNotification(NotificationDto dto);
+
 }

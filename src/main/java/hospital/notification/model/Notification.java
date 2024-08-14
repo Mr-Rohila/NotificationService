@@ -3,6 +3,7 @@ package hospital.notification.model;
 import hospital.notification.dtos.NotificationDto;
 import hospital.notification.enums.NotificationStatus;
 import hospital.notification.enums.NotificationType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -29,9 +30,11 @@ public class Notification {
 
 	private String body;
 
+	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private NotificationStatus status;
 
+	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private NotificationType type;
 
@@ -41,7 +44,10 @@ public class Notification {
 	public Notification(NotificationDto dto) {
 		this.to = dto.getTo();
 		this.source = dto.getSource();
+		this.subject = dto.getSubject();
 		this.body = dto.getBody();
+		this.status = NotificationStatus.PENDING;
+		this.type = NotificationType.EMAIL;
 	}
 
 }
