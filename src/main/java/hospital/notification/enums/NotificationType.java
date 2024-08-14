@@ -2,7 +2,7 @@ package hospital.notification.enums;
 
 public enum NotificationType {
 
-	EMAIL("EMAIL"), SMS("SMS");
+	VERIFY_MAIL_ID("VERIFY MAIL ID"), PASSWORD_RESET("PASSWORD RESET");
 
 	private final String value;
 

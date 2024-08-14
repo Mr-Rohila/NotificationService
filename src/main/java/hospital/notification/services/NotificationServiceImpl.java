@@ -2,6 +2,8 @@ package hospital.notification.services;
 
 import java.util.List;
 
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
 import hospital.notification.dtos.NotificationDto;
@@ -17,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class NotificationServiceImpl implements NotificationService {
 
 	private final NotificationRepository notificationRepository;
+	private final JavaMailSender emailSender;
 
 	@Override
 	public List<Notification> getAllNotification() {
@@ -50,17 +53,21 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	@Override
-	public String sendNotification(NotificationDto dto) {
-		Notification notification = new Notification(dto);
+	public String sendNotification(SimpleMailMessage mailMessage) {
 
-		/* create mail body */
-
-		return null;
+		try {
+			emailSender.send(mailMessage);
+			return NotificationStatus.DELIVERED.value();
+		} catch (Exception e) {
+			return NotificationStatus.PENDING.value();
+		}
 	}
 
 	@Override
 	public Notification saveNotification(NotificationDto dto) {
 		return notificationRepository.save(new Notification(dto));
 	}
-
+	
+	
+	// c
 }

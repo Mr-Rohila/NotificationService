@@ -47,7 +47,6 @@ public class Notification {
 		this.subject = dto.getSubject();
 		this.body = dto.getBody();
 		this.status = NotificationStatus.PENDING;
-		this.type = NotificationType.EMAIL;
 	}
 
 }
