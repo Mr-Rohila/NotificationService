@@ -1,5 +1,6 @@
 package hospital.notification.dtos;
 
+import hospital.notification.enums.NotificationType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -8,20 +9,14 @@ import lombok.Data;
 @Data
 public class NotificationDto {
 
-	@NotBlank(message = "to is Empty")
-	@NotNull(message = "to is null")
-	@NotEmpty(message = "to is Empty")
-	private String to;
+	@NotBlank(message = "Notification type not found")
+	@NotEmpty(message = "Notification type not found")
+	@NotNull(message = "Notification type not found")
+	private NotificationType type;
 
-	@NotBlank(message = "to is Empty")
-	@NotNull(message = "to is null")
-	@NotEmpty(message = "to is Empty")
-	private String source;
+	private String redirectUrl;
 
-	private String subject = "General - Notification";
+	@NotNull(message = "User Id not found")
+	private Long userId;
 
-	@NotBlank(message = "to is Empty")
-	@NotNull(message = "to is null")
-	@NotEmpty(message = "to is Empty")
-	private String body;
 }

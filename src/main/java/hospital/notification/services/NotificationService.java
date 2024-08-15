@@ -2,7 +2,6 @@ package hospital.notification.services;
 
 import java.util.List;
 
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 import hospital.notification.dtos.NotificationDto;
@@ -20,14 +19,15 @@ public interface NotificationService {
 
 	List<Notification> getNotificationByTo(String to);
 
-	List<Notification> getNotificationBySource(String source);
+	List<Notification> getNotificationByServiceName(String serviceName);
 
 	List<Notification> getNotificationByType(NotificationType type);
 
 	List<Notification> getNotificationByStatus(NotificationStatus status);
 
-	String sendNotification(SimpleMailMessage mailMessage);
+	Notification saveNotification(NotificationDto dto, String serviceName);
 
-	Notification saveNotification(NotificationDto dto);
+	void saveNotification(Notification notification);
+
 
 }

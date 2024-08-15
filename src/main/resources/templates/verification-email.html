@@ -1,70 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Verification</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
-        .email-container {
-            width: 100%;
-            background-color: #f4f4f4;
-            padding: 20px;
-        }
-        .email-content {
-            max-width: 600px;
-            margin: auto;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .logo {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .logo img {
-            max-width: 150px;
-        }
-        .button {
-            display: inline-block;
-            padding: 15px 30px;
-            font-size: 16px;
-            color: #ffffff;
-            background-color: #007bff;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-        .footer {
-            text-align: center;
-            font-size: 14px;
-            color: #777;
-            margin-top: 20px;
-        }
-    </style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Email Verification</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			color: #333;
+			margin: 0;
+			padding: 0;
+		}
+
+		.email-container {
+			width: 100%;
+			background-color: #f4f4f4;
+			padding: 20px;
+		}
+
+		.email-content {
+			max-width: 600px;
+			margin: auto;
+			background-color: #ffffff;
+			padding: 20px;
+			border-radius: 8px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+
+		.logo {
+			text-align: center;
+			margin-bottom: 20px;
+		}
+
+		.logo img {
+			max-width: 150px;
+		}
+
+		.button {
+			display: inline-block;
+			padding: 15px 30px;
+			font-size: 16px;
+			color: #ffffff;
+			background-color: #007bff;
+			text-decoration: none;
+			border-radius: 5px;
+			margin-top: 20px;
+		}
+
+		.footer {
+			text-align: center;
+			font-size: 14px;
+			color: #777;
+			margin-top: 20px;
+		}
+	</style>
 </head>
+
 <body>
-    <div class="email-container">
-        <div class="email-content">
-            <div class="logo">
-                <img src="YOUR_LOGO_URL" alt="Company Logo">
-            </div>
-            <h1>Email Verification</h1>
-            <p>Hi there,</p>
-            <p>Thank you for registering with us. Please click the button below to verify your email address and complete the registration process.</p>
-            <a href="VERIFICATION_LINK" class="button">Verify Email</a>
-            <p>If you didn't create an account using this email address, please ignore this email.</p>
-            <div class="footer">
-                <p>Best regards,<br>Your Company Name</p>
-                <p>Your Company Address<br>Your Company Phone</p>
-            </div>
-        </div>
-    </div>
+	<div class="email-container">
+		<div class="email-content">
+			<div class="logo">
+				<img th:src="@{${logoUrl}}" alt="Company Logo">
+			</div>
+			<h1>Email Verification</h1>
+			<p>Hi there,</p>
+			<p>Thank you for registering with us. Please click the button below to verify your email address and
+				complete the registration process.</p>
+			<a th:href="@{${redirectUrl}}" class="button" style="color: #ffffff;">Verify Email</a>
+			<p>If you didn't create an account using this email address, please ignore this email.</p>
+			<div class="footer">
+				<p>Best regards,<br>A1 Hospital</p>
+			</div>
+		</div>
+	</div>
 </body>
+
 </html>

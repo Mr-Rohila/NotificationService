@@ -2,8 +2,6 @@ package hospital.notification.services;
 
 import java.util.List;
 
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
 import hospital.notification.dtos.NotificationDto;
@@ -19,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 public class NotificationServiceImpl implements NotificationService {
 
 	private final NotificationRepository notificationRepository;
-	private final JavaMailSender emailSender;
 
 	@Override
 	public List<Notification> getAllNotification() {
@@ -38,8 +35,8 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	@Override
-	public List<Notification> getNotificationBySource(String source) {
-		return notificationRepository.findBySource(source);
+	public List<Notification> getNotificationByServiceName(String serviceName) {
+		return notificationRepository.findByServiceName(serviceName);
 	}
 
 	@Override
@@ -53,21 +50,30 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	@Override
-	public String sendNotification(SimpleMailMessage mailMessage) {
+	public Notification saveNotification(NotificationDto dto, String serviceName) {
 
-		try {
-			emailSender.send(mailMessage);
-			return NotificationStatus.DELIVERED.value();
-		} catch (Exception e) {
-			return NotificationStatus.PENDING.value();
+		switch (dto.getType()) {
+		case VERIFY -> {
+			Notification notification = new Notification();
+			notification.setUserId(dto.getUserId());
+			notification.setSubject("Please Verify Your Email Address");
+			notification.setTemplateName("verification-email");
+			notification.setRedirectUrl(dto.getRedirectUrl());
+			notification.setStatus(NotificationStatus.PENDING);
+			notification.setType(NotificationType.VERIFY);
+			notification.setServiceName(serviceName);
+			return notificationRepository.save(notification);
+		}
+		case PASSWORD_RESET -> {
+			return null;
+		}
+
+		default -> throw new IllegalArgumentException("Unexpected type : " + dto.getType());
 		}
 	}
 
 	@Override
-	public Notification saveNotification(NotificationDto dto) {
-		return notificationRepository.save(new Notification(dto));
+	public void saveNotification(Notification notification) {
+		notificationRepository.save(notification);
 	}
-	
-	
-	// c
 }

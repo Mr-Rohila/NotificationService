@@ -1,6 +1,5 @@
 package hospital.notification.model;
 
-import hospital.notification.dtos.NotificationDto;
 import hospital.notification.enums.NotificationStatus;
 import hospital.notification.enums.NotificationType;
 import jakarta.persistence.Column;
@@ -16,19 +15,27 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Notification {
+public class Notification extends DateAudit {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String source;
+	private String serviceName;
 
+	@Column(name = "toEmail")
 	private String to;
+
+	private Long userId;
+
+	private String userName;
 
 	private String subject;
 
-	private String body;
+	private String redirectUrl;
+
+	@Column(columnDefinition = "TEXT")
+	private String templateName;
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
@@ -38,15 +45,5 @@ public class Notification {
 	@Enumerated(EnumType.STRING)
 	private NotificationType type;
 
-	public Notification() {
-	}
-
-	public Notification(NotificationDto dto) {
-		this.to = dto.getTo();
-		this.source = dto.getSource();
-		this.subject = dto.getSubject();
-		this.body = dto.getBody();
-		this.status = NotificationStatus.PENDING;
-	}
-
+	private String error;
 }
