@@ -65,7 +65,15 @@ public class NotificationServiceImpl implements NotificationService {
 			return notificationRepository.save(notification);
 		}
 		case PASSWORD_RESET -> {
-			return null;
+			Notification notification = new Notification();
+			notification.setUserId(dto.getUserId());
+			notification.setSubject("Reset Password | A1 Hospital");
+			notification.setTemplateName("reset-password-email");
+			notification.setRedirectUrl(dto.getRedirectUrl());
+			notification.setStatus(NotificationStatus.PENDING);
+			notification.setType(NotificationType.PASSWORD_RESET);
+			notification.setServiceName(serviceName);
+			return notificationRepository.save(notification);
 		}
 
 		default -> throw new IllegalArgumentException("Unexpected type : " + dto.getType());

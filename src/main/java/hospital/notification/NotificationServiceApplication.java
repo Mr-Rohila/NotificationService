@@ -21,7 +21,7 @@ public class NotificationServiceApplication {
 	// @PostConstruct
 	public void sendEmail() {
 		NotificationDto dto = new NotificationDto();
-		dto.setType(NotificationType.VERIFY);
+		dto.setType(NotificationType.PASSWORD_RESET);
 		dto.setUserId(1L);
 		dto.setRedirectUrl("https://google.com");
 		emailService.sendEmail(dto, "Auth Server");
