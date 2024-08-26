@@ -7,13 +7,14 @@ import org.springframework.stereotype.Component;
 import hospital.notification.exceptions.TokenInValidateException;
 import hospital.notification.model.URLToken;
 import hospital.notification.repository.URLTokenRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
 public class URLTokenServiceImpl implements URLTokenService {
 
-	private URLTokenRepository tokenRepository;
+	private final URLTokenRepository tokenRepository;
 
 	@Override
 	public URLToken createToken(Long userId) {
@@ -21,15 +22,16 @@ public class URLTokenServiceImpl implements URLTokenService {
 	}
 
 	@Override
-	public void deleteToken(String tokne, Long userId) {
-		this.tokenRepository.deleteByTokenAndUserId(tokne, userId);
+	@Transactional
+	public void deleteToken(String tokne) {
+		this.tokenRepository.deleteByToken(tokne);
 	}
 
 	@Override
-	public URLToken validateToken(String token, Long userId) throws TokenInValidateException {
+	public URLToken validateToken(String token) throws TokenInValidateException {
 		URLToken resetToken = tokenRepository.findByToken(token).orElse(null);
 		if (resetToken == null || resetToken.getExpiryDate().isBefore(LocalDateTime.now())) {
-			throw new TokenInValidateException("Token is invalid or expired");
+			throw new TokenInValidateException("Link is invalid or expired");
 		}
 		return resetToken;
 	}

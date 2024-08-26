@@ -12,5 +12,5 @@ public interface URLTokenRepository extends JpaRepository<URLToken, Long> {
 
 	Optional<URLToken> findByToken(String token);
 
-	void deleteByTokenAndUserId(String token, Long userId);
+	void deleteByToken(String token);
 }

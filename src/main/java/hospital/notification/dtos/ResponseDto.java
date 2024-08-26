@@ -16,6 +16,9 @@ public class ResponseDto<T> {
 	private String path;
 	private T data;
 
+	public ResponseDto() {
+	}
+
 	public ResponseDto(String message, T data) {
 		this.timestamp = new Date();
 		this.status = 200;
@@ -25,5 +28,10 @@ public class ResponseDto<T> {
 
 		this.message = message;
 		this.data = data;
+	}
+
+	public ResponseDto(int status, String message, T data) {
+		this(message, data);
+		this.status = status;
 	}
 }

@@ -10,7 +10,7 @@ public interface URLTokenService {
 
 	URLToken createToken(Long userId);
 
-	void deleteToken(String tokne, Long userId);
+	void deleteToken(String tokne);
 
-	URLToken validateToken(String token, Long userId) throws TokenInValidateException;
+	URLToken validateToken(String token) throws TokenInValidateException;
 }

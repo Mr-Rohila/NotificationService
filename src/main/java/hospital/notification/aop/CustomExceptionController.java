@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import hospital.notification.dtos.ResponseDto;
+
 @RestControllerAdvice
 public class CustomExceptionController {
 
@@ -23,5 +25,11 @@ public class CustomExceptionController {
 			errors.put(fieldName, errorMessage);
 		});
 		return errors;
+	}
+
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	@ExceptionHandler(Exception.class)
+	public ResponseDto<String> exception(Exception ex) {
+		return new ResponseDto<>(500, "Failed", ex.getLocalizedMessage());
 	}
 }

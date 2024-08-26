@@ -7,5 +7,5 @@ import hospital.notification.dtos.NotificationDto;
 @Service
 public interface EmailService {
 
-	String sendEmail(NotificationDto dto, String serviceName);
+	String sendEmail(NotificationDto dto, String serviceName) throws Exception;
 }

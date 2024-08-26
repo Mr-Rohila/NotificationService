@@ -7,15 +7,19 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import hospital.notification.dtos.NotificationDto;
+import hospital.notification.dtos.ResponseDto;
 import hospital.notification.dtos.UserDto;
 import hospital.notification.enums.NotificationStatus;
 import hospital.notification.model.Notification;
+import hospital.notification.model.URLToken;
+import hospital.notification.services.clients.AuthorizationServerService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +37,13 @@ public class EmailServiceImpl implements EmailService {
 
 	private final NotificationService notificationService;
 
+	private final URLTokenService urlTokenService;
+
+	private final AuthorizationServerService authorizationServerService;
+	private static final String NOTIFICATION_TOKEN = "notificationToken";
+
 	@Override
-	public String sendEmail(NotificationDto dto, String serviceName) {
+	public String sendEmail(NotificationDto dto, String serviceName) throws Exception {
 		// save notification first
 		Notification notification = notificationService.saveNotification(dto, serviceName);
 		try {
@@ -52,7 +61,7 @@ public class EmailServiceImpl implements EmailService {
 			notification.setStatus(NotificationStatus.FAILED);
 			// update notification
 			notificationService.saveNotification(notification);
-			return "Mail Schedule";
+			throw e;
 		}
 	}
 
@@ -60,8 +69,11 @@ public class EmailServiceImpl implements EmailService {
 		Context context = new Context();
 		String logoUrl = "cid:logo";
 		context.setVariable("logoUrl", logoUrl);
-		if (StringUtils.hasText(notification.getRedirectUrl()))
-			context.setVariable("redirectUrl", notification.getRedirectUrl());
+		if (StringUtils.hasText(notification.getRedirectUrl())) {
+			URLToken createToken = urlTokenService.createToken(notification.getUserId());
+			context.setVariable("redirectUrl", notification.getRedirectUrl() + "?id=" + notification.getUserId() + "&"
+					+ NOTIFICATION_TOKEN + "=" + createToken.getToken());
+		}
 		if (StringUtils.hasText(notification.getUserName()))
 			context.setVariable("name", notification.getUserName());
 
@@ -85,11 +97,10 @@ public class EmailServiceImpl implements EmailService {
 	}
 
 	private UserDto getUser(Long userId) {
-		// get the user from Authorization server using rest Template
-		UserDto dto = new UserDto();
-		dto.setEmailId("ankushjawla40@gmail.com");
-		dto.setFullName("Ankuhs Rohila Rajput");
-		return dto;
+		// get user from user services
+		ResponseDto<UserDto> user = authorizationServerService.getUser(userId);
+		if (user.getStatus() == 200)
+			return user.getData();
+		throw new UsernameNotFoundException("Issue in getting user details from authorization server");
 	}
-	
 }
