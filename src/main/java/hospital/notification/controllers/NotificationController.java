@@ -33,7 +33,7 @@ public class NotificationController {
 	}
 
 	@PostMapping("validate")
-	// @PreAuthorize("hasAuthority('SCOPE_system')")
+	@PreAuthorize("hasAuthority('SCOPE_system')")
 	public ResponseDto<?> tokenDetails(@RequestParam String notificationToken) {
 		try {
 			return new ResponseDto<>("Success", urlTokenService.validateToken(notificationToken));
